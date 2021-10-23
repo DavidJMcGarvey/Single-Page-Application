@@ -9,3 +9,8 @@ app.use(express.static('public'))
 
 // Allow front-end access to node_modules dir
 app.use('/scripts', express.static(`${__dirname}/node_modules/`));
+
+// Listen for HTTP requsts on port 3000
+app.listen(port, () => {
+    console.log('listening on %d', port);
+});
