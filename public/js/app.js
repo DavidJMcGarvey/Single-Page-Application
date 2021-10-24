@@ -7,6 +7,54 @@ window.addEventListener('load', () => {
     const exchangeTemplate = Handlebars.compile($('#exchange-template').html());
     const historicalTemplate = Handlebars.compile($('#historical-template').html());
 
-    const html = ratesTemplate();
-    el.html(html);
+    // Router Declaration
+    const router = new Router({
+        mode: 'history',
+        page404: (path) => {
+            const html = errorTemplate({
+                color: 'yellow',
+                title: 'Error 404 - Page NOT Found!',
+                message: `The path '/${path}' does not exist on this site.`, 
+            });
+            el.html(html);
+        },
+    });
+
+    router.add('/', () => {
+        let html = ratesTemplate();
+        el.html(html);
+    });
+
+    router.add('/exchange', () => {
+        let html = exchangeTemplate();
+        el.html(html);
+    });
+
+    router.add ('/historical', () => {
+        let html = historicalTemplate();
+        el.html(html);
+    });
+
+    // Navigate app to current URL
+    router.navigateTo(window.location.pathname);
+
+    // Highlight Active Menu on Refresh/Page Reload
+    const link = $(`a[href$='${window.location.pathname}']`);
+    link.addClass('active');
+
+    $('a').on('click', (event) => {
+        //Block browser page load
+        event.preventDefault();
+
+        // Higlight Active Menu on Click
+        const target = $(event.target);
+        $('.item').removeClass('active');
+        target.addClass('active');
+
+        //Navigate to clicked URL
+        const href = target.attr('href');
+        const path = href.substr(href.lastIndexOf('/'));
+        router.navigateTo(path);
+    });
+
 });
