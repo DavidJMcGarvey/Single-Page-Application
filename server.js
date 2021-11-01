@@ -17,3 +17,12 @@ app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`));
 app.listen(port, () => {
     console.log('listening on %d', port);
 });
+
+const { getRates } = require('./lib/fixer-service');
+
+// const test = async() => {
+//     const data = await getRates();
+//     console.log(data);
+// }
+
+// test();
