@@ -10,6 +10,9 @@ app.use(express.static('public'))
 // Allow front-end access to node_modules dir
 app.use('/scripts', express.static(`${__dirname}/node_modules/`));
 
+// Express Error handler
+
+
 // Redirect all traffic to index.html
 app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`));
 
@@ -25,4 +28,4 @@ const { getRates } = require('./lib/fixer-service');
 //     console.log(data);
 // }
 
-// test();
+// test();`
