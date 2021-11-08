@@ -17,7 +17,7 @@ const errorHandler = (err, req, res) => {
         // that falls out of the range of 2xx
         res.status(403).send({title: 'Server responded with an error', message: err.message});
     } else if (err.request) {
-        // The request was made but no respnse was recieved
+        // The request was made but no response was recieved
         res.status(503).send({title: 'Unbale to communicate with server', message: err.message});
     } else {
         // Something happened in setting up the request that triggered an Error
