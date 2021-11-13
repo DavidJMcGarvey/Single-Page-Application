@@ -51,4 +51,4 @@ const { getRates } = require('./lib/fixer-service');
 //     console.log(data);
 // }
 
-// test();`
+// test();
