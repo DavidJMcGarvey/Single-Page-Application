@@ -1,5 +1,3 @@
-const { default: axios } = require("axios");
-
 window.addEventListener('load', () => {
     const el = $('#app');
 
@@ -36,7 +34,7 @@ window.addEventListener('load', () => {
     };
 
     // Display Latest Currency Rates
-    router.add('/', () => {
+    router.add('/', async () => {
         // Display loader first
         let html = ratesTemplate();
         el.html(html);
