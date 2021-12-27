@@ -36,6 +36,29 @@ app.get('/api/rates', async (req, res) => {
     }
 });
 
+// Fetch Symbols
+app.get('/api/symbols', async (req, res) => {
+    try {
+        const data = await getSymbols();
+        res.setHeader('Content-Type', 'application/json');
+        res.send(data);
+    } catch (error) {
+        errorHandler(error, req, res);
+    }
+});
+
+// Convert Currency
+app.post('/api/convert', async (req, res) => {
+    try {
+        const {from, to} = req.body;
+        const data = await convertCurrency(from, to);
+        res.setHeader('Content-Type', 'application/json');
+        res.send(data);
+    } catch (error) {
+        errorHandler(error, req, res);
+    }
+});
+
 // Redirect all traffic to index.html
 app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`));
 
@@ -44,11 +67,31 @@ app.listen(port, () => {
     console.log('listening on %d', port);
 });
 
-const { getRates } = require('./lib/fixer-service');
+const { getRates, getSymbols } = require('./lib/fixer-service');
+const { convertCurrency } = require('./lib/free-currency-service');
 
-// const test = async() => {
-//     const data = await getRates();
-//     console.log(data);
-// }
+// Server Tests
 
-// test();
+// TEST getRates
+const test1 = async() => {
+    const data = await getRates();
+    console.log(data);
+}
+
+// test1();
+
+// TEST Symbols Endpoint
+const test2 = async() => {
+    const data = await getSymbols();
+    console.log(data);
+}
+
+// test2();
+
+// TEST Currency Conversion Endpoints
+const test3 = async() => {
+    const data = await convertCurrency('USD', 'KES');
+    console.log(data);
+}
+
+test3();
