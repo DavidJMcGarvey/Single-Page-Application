@@ -52,7 +52,8 @@ window.addEventListener('load', () => {
             $('.loading').removeClass('loading');
         }
     });
-
+    
+    // Here dawg
     router.add('/exchange', () => {
         let html = exchangeTemplate();
         el.html(html);
