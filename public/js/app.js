@@ -92,7 +92,7 @@ window.addEventListener('load', () => {
         el.html(html);
         try {
             // Load Symbols
-            const response = await api.get('symbols');
+            const response = await api.get('/symbols');
             const { symbols } = response.data;
             html = exchangeTemplate({ symbols });
             el.html(html);
@@ -105,6 +105,8 @@ window.addEventListener('load', () => {
                     amount: 'decimal',
                 },
             });
+            // Specify submit handler
+            $('.submit').on(convertRatesHandler);
         } catch (error) {
             showError(error);
         }
