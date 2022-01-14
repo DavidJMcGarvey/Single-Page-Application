@@ -3,12 +3,21 @@ const express = require('express');
 
 const app = express();
 const port = process.env.PORT || 3000;
+const bodyParser = require('body-parser');
 
 // Set public directory as root
 app.use(express.static('public'));
 
 // Allow front-end access to node_modules dir
 app.use('/scripts', express.static(`${__dirname}/node_modules/`));
+
+// Parse POST data as URL encoded data
+app.use(bodyParser.urlencoded({
+    extend: true,
+}));
+
+// Parse POST data as JSON
+app.use(bodyParser.json());
 
 // Express Error handler
 const errorHandler = (err, req, res) => {
@@ -50,7 +59,7 @@ app.get('/api/symbols', async (req, res) => {
 // Convert Currency
 app.post('/api/convert', async (req, res) => {
     try {
-        const {from, to} = req.body;
+        const { from, to } = req.body;
         const data = await convertCurrency(from, to);
         res.setHeader('Content-Type', 'application/json');
         res.send(data);
