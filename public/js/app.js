@@ -74,9 +74,9 @@ window.addEventListener('load', () => {
 
         // Handle Convert Button Click Event
         const convertRatesHandler = () => {
-            if ($('ui.form').form('is valid')) {
+            if ($('.ui.form').form('is valid')) {
                 // Hide error message
-                $(ui.error.message).hide();
+                $('.ui.error.message').hide();
                 // Post to Express server
                 $('#result-segment').addClass('loading');
                 getConversionResults();
@@ -106,7 +106,7 @@ window.addEventListener('load', () => {
                 },
             });
             // Specify submit handler
-            $('.submit').on(convertRatesHandler);
+            $('.submit').trigger(convertRatesHandler);
         } catch (error) {
             showError(error);
         }

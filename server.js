@@ -13,7 +13,7 @@ app.use('/scripts', express.static(`${__dirname}/node_modules/`));
 
 // Parse POST data as URL encoded data
 app.use(bodyParser.urlencoded({
-    extend: true,
+    extended: true,
 }));
 
 // Parse POST data as JSON
