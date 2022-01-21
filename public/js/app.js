@@ -61,6 +61,8 @@ window.addEventListener('load', () => {
             const amount = $('#amount').val();
             // Send post data to Express(proxy) server
             try {
+                // 403 Error coming from here? 1/20/22
+                console.log('gotcha!')
                 const response = await api.post('/convert', { from, to });
                 const { rate } = response.data;
                 const result = rate * amount;
@@ -106,7 +108,7 @@ window.addEventListener('load', () => {
                 },
             });
             // Specify submit handler
-            $('.submit').trigger(convertRatesHandler);
+            $('.submit').click(convertRatesHandler);
         } catch (error) {
             showError(error);
         }
