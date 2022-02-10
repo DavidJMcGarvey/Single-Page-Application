@@ -69,7 +69,7 @@ app.post('/api/convert', async (req, res) => {
 });
 
 // Fetch currency rates by date
-app.post('api/historical', async (req, res) => {
+app.post('/api/historical', async (req, res) => {
     try {
         const { date } = req.body;
         const data = await getHistoricalRate(date);
