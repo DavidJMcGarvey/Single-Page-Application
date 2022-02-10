@@ -1,5 +1,6 @@
 require('dotenv').config(); // read .env files
 const express = require('express');
+const {getRates, getSymbols, getHistoricalRate} = require('./lib/fixer-service');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -61,6 +62,18 @@ app.post('/api/convert', async (req, res) => {
     try {
         const { from, to } = req.body;
         const data = await convertCurrency(from, to);
+        res.setHeader('Content-Type', 'application/json');
+        res.send(data);
+    } catch (error) {
+        errorHandler(error, req, res);
+    }
+});
+
+// Fetch currency rates by date
+app.post('api/historical', async (req, res) => {
+    try {
+        const { date } = req.body;
+        const data = await getHistoricalRate(date);
         res.setHeader('Content-Type', 'application/json');
         res.send(data);
     } catch (error) {
