@@ -1,6 +1,5 @@
 require('dotenv').config(); // read .env files
 const express = require('express');
-const {getRates, getSymbols, getHistoricalRate} = require('./lib/fixer-service');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -89,7 +88,7 @@ app.listen(port, () => {
     console.log('listening on %d', port);
 });
 
-const { getRates, getSymbols } = require('./lib/fixer-service');
+const { getRates, getSymbols, getHistoricalRate } = require('./lib/fixer-service');
 const { convertCurrency } = require('./lib/free-currency-service');
 
 // Server Tests
@@ -117,3 +116,10 @@ const test3 = async() => {
 }
 
 // test3();
+
+const test4 = async() => {
+    const data = await getHistoricalRate('2014-07-04');
+    console.log(data);
+}
+
+// test4();
