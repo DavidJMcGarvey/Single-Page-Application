@@ -54,37 +54,37 @@ window.addEventListener('load', () => {
     });
     
     // Perform POST request, calculate and display conversion results
-        const getConversionResults = async () => {
-            // Extract form data
-            const from = $('#from').val();
-            const to = $('#to').val();
-            const amount = $('#amount').val();
-            // Send post data to Express(proxy) server
-            try {
-                const response = await api.post('/convert', { from, to });
-                const { rate } = response.data;
-                const result = rate * amount;
-                $('#result').html(`${to} ${result}`);
-            } catch (error) {
-                showError(error);
-            } finally {
-                $('#result-segment').removeClass('loading');
-            }
-        };
+    const getConversionResults = async () => {
+        // Extract form data
+        const from = $('#from').val();
+        const to = $('#to').val();
+        const amount = $('#amount').val();
+        // Send post data to Express(proxy) server
+        try {
+            const response = await api.post('/convert', { from, to });
+            const { rate } = response.data;
+            const result = rate * amount;
+            $('#result').html(`${to} ${result}`);
+        } catch (error) {
+            showError(error);
+        } finally {
+            $('#result-segment').removeClass('loading');
+        }
+    };
 
-        // Handle Convert Button Click Event
-        const convertRatesHandler = () => {
-            if ($('.ui.form').form('is valid')) {
-                // Hide error message
-                $('.ui.error.message').hide();
-                // Post to Express server
-                $('#result-segment').addClass('loading');
-                getConversionResults();
-                // Prevent page from submitting to server
-                return false;
-            }
-            return true;
-        };
+    // Handle Convert Button Click Event
+    const convertRatesHandler = () => {
+        if ($('.ui.form').form('is valid')) {
+            // Hide error message
+            $('.ui.error.message').hide();
+            // Post to Express server
+            $('#result-segment').addClass('loading');
+            getConversionResults();
+            // Prevent page from submitting to server
+            return false;
+        }
+        return true;
+    };
 
     router.add('/exchange', async () => {
         // Display loader first
@@ -112,9 +112,51 @@ window.addEventListener('load', () => {
         }
     });
 
-    router.add ('/historical', () => {
-        let html = historicalTemplate();
+    const getHistoricalRates = async () => {
+        const date = $('#date').val();
+        try {
+            const response = await api.post('/historical', { date });
+            const { base, rates } = response.data;
+            const html = ratesTemplate({ base, date, rates });
+            $('#historical-table').html(html);
+        } catch (error) {
+            showError(error);
+        } finally {
+            $('.segment').removeClass('loading');
+        }
+    };
+
+    const historicalRatesHandler = () => {
+        if ($('.ui.form').form('is valid')) {
+            // Hide error message
+            $('.ui.error.message').hide();
+            // Indicate loading status
+            $('.segment').addClass('loading');
+            getHistoricalRates();
+            // Prevent page from submitting to server
+            return false;
+        }
+        return true;
+    };
+
+    router.add('/historical', () => {
+        // Display form
+        const html = historicalTemplate();
         el.html(html);
+        // Activiate Date Picker
+        $('#calendar').calendar({
+            type: 'date',
+            formatter: { //format date to yyyy-mm-dd
+                date: date => new Date(date).toISOString().split('T')[0],
+            },
+        });
+        // Validate Date input
+        $('ui.form').form({
+            fields: {
+                date: 'empty',
+            },
+        });
+        $('.submit').click(historicalRatesHandler);
     });
 
     // Navigate app to current URL
